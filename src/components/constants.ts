@@ -9,8 +9,8 @@ import { variantType } from './types'
 export const DEFAULT_CONFIG = {
   variant: 'single' as variantType,
   color: '#000000',
-  opacity: 0.6,
-  fontSize: 14,
+  opacity: 1,
+  fontSize: 12,
   numbers: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
   matrixNumbers: ['0', '1'],
 }
