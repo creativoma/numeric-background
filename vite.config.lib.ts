@@ -8,7 +8,13 @@ export default defineConfig({
     react(),
     dts({
       insertTypesEntry: true,
-      exclude: ['**/*.test.*', '**/*.spec.*', 'src/App.tsx', 'src/main.tsx'],
+      exclude: [
+        '**/*.test.*',
+        '**/*.spec.*',
+        'src/App.tsx',
+        'src/main.tsx',
+        '/public/**/*',
+      ],
     }),
   ],
   build: {
@@ -29,5 +35,6 @@ export default defineConfig({
     },
     target: 'es2020',
     minify: true,
+    copyPublicDir: false,
   },
 })
