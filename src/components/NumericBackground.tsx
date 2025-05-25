@@ -1,15 +1,29 @@
-import { useState, useEffect, useRef, useCallback, FC } from 'react'
+import { useState, useEffect, useRef, useCallback, FC, useMemo } from 'react'
 import { NumericBackgroundProps } from './types'
 import { COLORS, DEFAULT_CONFIG } from './constants'
 
-/**
- * NumericBackground component renders a customizable numeric background
- * with options for color, opacity, font size, and different visual variants.
- * It uses a canvas to draw numbers in various styles including matrix effect.
- *
- * @param {NumericBackgroundProps} props - The properties for the component.
- * @returns {JSX.Element} The rendered component.
- */
+const throttle = (func: Function, delay: number) => {
+  let timeoutId: NodeJS.Timeout | null = null
+  let lastExecTime = 0
+  return (...args: any[]) => {
+    const currentTime = Date.now()
+
+    if (currentTime - lastExecTime > delay) {
+      func(...args)
+      lastExecTime = currentTime
+    } else {
+      if (timeoutId) clearTimeout(timeoutId)
+      timeoutId = setTimeout(
+        () => {
+          func(...args)
+          lastExecTime = Date.now()
+        },
+        delay - (currentTime - lastExecTime)
+      )
+    }
+  }
+}
+
 const NumericBackground: FC<NumericBackgroundProps> = ({
   variant = DEFAULT_CONFIG.variant,
   color = DEFAULT_CONFIG.color,
@@ -26,32 +40,62 @@ const NumericBackground: FC<NumericBackgroundProps> = ({
   const [mounted, setMounted] = useState(false)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
 
-  const getNumbers = useCallback(() => {
-    if (numbers) {
-      return numbers
-    }
+  const numbersToUse = useMemo(() => {
+    if (numbers) return numbers
     return variant === 'matrix'
       ? DEFAULT_CONFIG.matrixNumbers
       : DEFAULT_CONFIG.numbers
   }, [numbers, variant])
 
-  useEffect(() => {
-    const updateDimensions = () => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect()
-        setDimensions({
-          width: width || rect.width || window.innerWidth,
-          height: height || rect.height || window.innerHeight,
-        })
+  const gridConfig = useMemo(() => {
+    const charWidth = fontSize * 0.6
+    const charHeight = fontSize * 1.2
+    const cols = Math.ceil(dimensions.width / charWidth)
+    const rows = Math.ceil(dimensions.height / charHeight)
+
+    return { charWidth, charHeight, cols, rows }
+  }, [fontSize, dimensions.width, dimensions.height])
+
+  const preGeneratedData = useMemo(() => {
+    const { cols, rows, charWidth, charHeight } = gridConfig
+    const data = []
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const x = col * charWidth + charWidth / 2
+        const y = row * charHeight + charHeight / 2
+        const number =
+          numbersToUse[Math.floor(Math.random() * numbersToUse.length)]
+        const colorIndex = Math.floor(Math.random() * COLORS.length)
+
+        data.push({ x, y, number, colorIndex })
       }
     }
 
-    updateDimensions()
+    return data
+  }, [gridConfig, numbersToUse])
+
+  const throttledUpdateDimensions = useMemo(
+    () =>
+      throttle(() => {
+        if (containerRef.current) {
+          const rect = containerRef.current.getBoundingClientRect()
+          setDimensions({
+            width: width || rect.width || window.innerWidth,
+            height: height || rect.height || window.innerHeight,
+          })
+        }
+      }, 100),
+    [width, height]
+  )
+
+  useEffect(() => {
+    throttledUpdateDimensions()
     setMounted(true)
 
-    window.addEventListener('resize', updateDimensions)
-    return () => window.removeEventListener('resize', updateDimensions)
-  }, [width, height])
+    window.addEventListener('resize', throttledUpdateDimensions)
+    return () => window.removeEventListener('resize', throttledUpdateDimensions)
+  }, [throttledUpdateDimensions])
 
   const drawBackground = useCallback(() => {
     const canvas = canvasRef.current
@@ -61,8 +105,8 @@ const NumericBackground: FC<NumericBackgroundProps> = ({
     if (!ctx) return
 
     const { width: canvasWidth, height: canvasHeight } = dimensions
-    const numbersToUse = getNumbers()
 
+    // High DPI support
     const dpr = window.devicePixelRatio || 1
     canvas.width = canvasWidth * dpr
     canvas.height = canvasHeight * dpr
@@ -76,52 +120,33 @@ const NumericBackground: FC<NumericBackgroundProps> = ({
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
 
-    const charWidth = fontSize * 0.6
-    const charHeight = fontSize * 1.2
-    const cols = Math.ceil(canvasWidth / charWidth)
-    const rows = Math.ceil(canvasHeight / charHeight)
-
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < cols; col++) {
-        const x = col * charWidth + charWidth / 2
-        const y = row * charHeight + charHeight / 2
-        const number =
-          numbersToUse[Math.floor(Math.random() * numbersToUse.length)]
-
-        switch (variant) {
-          case 'multicolor':
-            ctx.fillStyle = COLORS[Math.floor(Math.random() * COLORS.length)]
-            ctx.globalAlpha = opacity
-            break
-          case 'single':
-            ctx.fillStyle = color
-            ctx.globalAlpha = opacity
-            break
-          case 'opacity':
-            ctx.fillStyle = color
-            ctx.globalAlpha = opacity
-            break
-          case 'matrix':
-            ctx.fillStyle =
-              color === DEFAULT_CONFIG.color ? DEFAULT_CONFIG.color : color
-            ctx.globalAlpha = opacity
-            break
-          default:
-            ctx.fillStyle = color
-            ctx.globalAlpha = opacity
-        }
-
-        ctx.fillText(number, x, y)
+    preGeneratedData.forEach(({ x, y, number, colorIndex }) => {
+      switch (variant) {
+        case 'multicolor':
+          ctx.fillStyle = COLORS[colorIndex]
+          break
+        case 'single':
+        case 'opacity':
+          ctx.fillStyle = color
+          break
+        case 'matrix':
+          ctx.fillStyle =
+            color === DEFAULT_CONFIG.color ? DEFAULT_CONFIG.color : color
+          break
+        default:
+          ctx.fillStyle = color
       }
-    }
-  }, [mounted, dimensions, fontSize, variant, color, opacity, getNumbers])
+
+      ctx.globalAlpha = opacity
+      ctx.fillText(number, x, y)
+    })
+  }, [mounted, dimensions, fontSize, variant, color, opacity, preGeneratedData])
 
   useEffect(() => {
     if (!mounted) return
     drawBackground()
   }, [mounted, drawBackground])
 
-  // Loading state
   if (!mounted) {
     return (
       <div
