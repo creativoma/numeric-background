@@ -1,11 +1,16 @@
 {
   "name": "@creativoma/numeric-background",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "A React component for creating a numeric background",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
+  "homepage": "https://github.com/creativoma/numeric-background#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/creativoma/numeric-background.git"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.esm.js",
