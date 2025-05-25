@@ -1,17 +1,25 @@
-# Numeric Background
+# @creativoma/numeric-background
 
-Un componente React que genera fondos numéricos aleatorios con diferentes variantes de colores y opacidad.
+Un componente React moderno que genera fondos numéricos animados con diferentes variantes de colores y opacidad. Perfecto para añadir un toque visual dinámico a tus aplicaciones.
 
-## Instalación
+## 🚀 Instalación
 
 ```bash
-npm install numeric-background
+npm install @creativoma/numeric-background
 ```
 
-## Uso básico
+```bash
+yarn add @creativoma/numeric-background
+```
+
+```bash
+pnpm add @creativoma/numeric-background
+```
+
+## 📖 Uso básico
 
 ```jsx
-import { NumericBackground } from 'numeric-background'
+import { NumericBackground } from '@creativoma/numeric-background'
 
 function App() {
   return (
@@ -25,24 +33,11 @@ function App() {
 }
 ```
 
-## Props
-
-| Prop        | Tipo                                    | Default             | Descripción                               |
-| ----------- | --------------------------------------- | ------------------- | ----------------------------------------- |
-| `variant`   | `'multicolor' \| 'single' \| 'opacity'` | `'multicolor'`      | Variante del fondo                        |
-| `color`     | `string`                                | `'#3b82f6'`         | Color para variantes 'single' y 'opacity' |
-| `opacity`   | `number`                                | `0.1`               | Opacidad para la variante 'opacity'       |
-| `density`   | `number`                                | `100`               | Densidad de números en el fondo           |
-| `fontSize`  | `number`                                | `16`                | Tamaño de fuente de los números           |
-| `numbers`   | `string[]`                              | `['0','1',...,'9']` | Array de números a mostrar                |
-| `className` | `string`                                | `''`                | Clases CSS adicionales                    |
-| `children`  | `React.ReactNode`                       | -                   | Contenido a mostrar sobre el fondo        |
-
-## Variantes
+## 🎨 Variantes disponibles
 
 ### Multicolor
 
-Números en colores aleatorios:
+Números en colores aleatorios vibrantes:
 
 ```jsx
 <NumericBackground variant="multicolor">{/* Tu contenido */}</NumericBackground>
@@ -68,55 +63,181 @@ Números con transparencia ajustable:
 </NumericBackground>
 ```
 
-## Ejemplos avanzados
+### Matrix
+
+Efecto estilo Matrix con números estáticos:
+
+```jsx
+<NumericBackground variant="matrix" color="#00ff00">
+  {/* Tu contenido */}
+</NumericBackground>
+```
+
+## ⚙️ Props
+
+| Prop             | Tipo                                                | Default             | Descripción                                         |
+| ---------------- | --------------------------------------------------- | ------------------- | --------------------------------------------------- |
+| `variant`        | `'multicolor' \| 'single' \| 'opacity' \| 'matrix'` | `'multicolor'`      | Variante del fondo                                  |
+| `color`          | `string`                                            | `'#3b82f6'`         | Color para variantes 'single', 'opacity' y 'matrix' |
+| `opacity`        | `number`                                            | `0.1`               | Opacidad para la variante 'opacity'                 |
+| `fontSize`       | `number`                                            | `16`                | Tamaño de fuente de los números                     |
+| `numbers`        | `string[]`                                          | `['0','1',...,'9']` | Array de números a mostrar                          |
+| `className`      | `string`                                            | `''`                | Clases CSS adicionales                              |
+| `children`       | `React.ReactNode`                                   | -                   | Contenido a mostrar sobre el fondo                  |
+| `width`          | `number`                                            | `auto`              | Ancho personalizado del canvas                      |
+| `height`         | `number`                                            | `auto`              | Alto personalizado del canvas                       |
+| `animationSpeed` | `number`                                            | -                   | Velocidad de animación (para futuras versiones)     |
+
+## 💡 Ejemplos avanzados
 
 ### Números personalizados
 
 ```jsx
 <NumericBackground
   variant="multicolor"
-  numbers={['α', 'β', 'γ', 'δ', 'ε']}
+  numbers={['α', 'β', 'γ', 'δ', 'ε', 'π', 'Σ', '∞']}
   density={150}
   fontSize={20}
 >
-  {/* Tu contenido */}
-</NumericBackground>
-```
-
-### Fondo completo en página
-
-```jsx
-<NumericBackground variant="opacity" className="min-h-screen" opacity={0.05}>
-  <div className="container mx-auto py-12">
-    <h1>Mi aplicación</h1>
-    {/* Resto del contenido */}
+  <div className="p-8">
+    <h2>Símbolos matemáticos</h2>
   </div>
 </NumericBackground>
 ```
 
-## Desarrollo
+### Fondo de página completa
+
+```jsx
+<NumericBackground
+  variant="opacity"
+  className="min-h-screen"
+  opacity={0.05}
+  density={80}
+>
+  <div className="relative z-10 container mx-auto py-12">
+    <h1 className="mb-8 text-4xl font-bold">Mi aplicación</h1>
+    <p>Contenido principal con fondo numérico sutil</p>
+  </div>
+</NumericBackground>
+```
+
+### Configuración de alta densidad
+
+```jsx
+<NumericBackground
+  variant="matrix"
+  color="#10b981"
+  fontSize={12}
+  numbers={['1', '0']}
+  width={800}
+  height={600}
+>
+  <div className="p-12">
+    <h2>Efecto Matrix personalizado</h2>
+  </div>
+</NumericBackground>
+```
+
+### Canvas con dimensiones fijas
+
+```jsx
+<NumericBackground
+  variant="single"
+  color="#ff6b6b"
+  width={1200}
+  height={800}
+  fontSize={18}
+>
+  <div className="flex h-full items-center justify-center">
+    <h1>Fondo con dimensiones fijas</h1>
+  </div>
+</NumericBackground>
+```
+
+## 🛠️ Desarrollo
 
 ```bash
+# Clonar el repositorio
+git clone https://github.com/creativoma/numeric-background.git
+cd numeric-background
+
 # Instalar dependencias
 npm install
 
 # Modo desarrollo
 npm run dev
 
+# Linting y formato
+npm run lint
+npm run format
+
 # Construir paquete
 npm run build
 
-# Publicar
+# Publicar (requiere permisos)
 npm publish
 ```
 
-## Tecnologías
+## 🧪 Estructura del proyecto
 
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
+```
+numeric-background/
+├── src/
+│   ├── components/
+│   │   ├── constants.ts
+│   │   ├── NumericBackground.tsx
+│   │   └── types.ts
+│   ├── index.ts
+│   └── index.css
+├── dist/                    # Archivos compilados
+├── public/                  # Demo assets
+├── README.md
+├── package.json
+├── tsconfig.json
+├── vite.config.lib.ts      # Configuración de build
+└── tailwind.config.js
+```
 
-## Licencia
+## 📋 Requisitos
 
-MIT
+- React >= 18.0.0
+- React DOM >= 18.0.0
+
+## 🏗️ Tecnologías
+
+- **React** - Biblioteca de componentes
+- **TypeScript** - Tipado estático
+- **Vite** - Build tool y bundler
+- **Tailwind CSS** - Framework de CSS
+
+## 📦 Formatos disponibles
+
+Este paquete incluye múltiples formatos para máxima compatibilidad:
+
+- **ESM** (`dist/index.esm.js`) - Para aplicaciones modernas
+- **UMD** (`dist/index.umd.js`) - Para compatibilidad universal
+- **TypeScript** (`dist/index.d.ts`) - Definiciones de tipos
+
+## 🤝 Contribuir
+
+Las contribuciones son bienvenidas! Por favor:
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/amazing-feature`)
+3. Commit tus cambios (`git commit -m 'Add amazing feature'`)
+4. Push a la rama (`git push origin feature/amazing-feature`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+MIT © [creativoma](https://github.com/creativoma)
+
+## 🏷️ Changelog
+
+### 0.0.1
+
+- ✨ Primera versión del componente NumericBackground
+- 🎨 Soporte para 3 variantes: multicolor, single, opacity
+- ⚙️ Props configurables para densidad, tamaño y números personalizados
+- 📦 Build optimizado con tree-shaking
+- 🔧 Soporte completo para TypeScript
