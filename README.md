@@ -1,5 +1,7 @@
 # @creativoma/numeric-background
 
+![Screenshot](public/screenshot.png)
+
 Un componente React moderno que genera fondos numéricos animados con diferentes variantes de colores y opacidad. Perfecto para añadir un toque visual dinámico a tus aplicaciones.
 
 [![npm version](https://img.shields.io/npm/v/@creativoma/numeric-background.svg)](https://www.npmjs.com/package/@creativoma/numeric-background)
