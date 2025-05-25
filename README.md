@@ -75,18 +75,17 @@ Efecto estilo Matrix con números estáticos:
 
 ## ⚙️ Props
 
-| Prop             | Tipo                                                | Default             | Descripción                                         |
-| ---------------- | --------------------------------------------------- | ------------------- | --------------------------------------------------- |
-| `variant`        | `'multicolor' \| 'single' \| 'opacity' \| 'matrix'` | `'multicolor'`      | Variante del fondo                                  |
-| `color`          | `string`                                            | `'#3b82f6'`         | Color para variantes 'single', 'opacity' y 'matrix' |
-| `opacity`        | `number`                                            | `0.1`               | Opacidad para la variante 'opacity'                 |
-| `fontSize`       | `number`                                            | `16`                | Tamaño de fuente de los números                     |
-| `numbers`        | `string[]`                                          | `['0','1',...,'9']` | Array de números a mostrar                          |
-| `className`      | `string`                                            | `''`                | Clases CSS adicionales                              |
-| `children`       | `React.ReactNode`                                   | -                   | Contenido a mostrar sobre el fondo                  |
-| `width`          | `number`                                            | `auto`              | Ancho personalizado del canvas                      |
-| `height`         | `number`                                            | `auto`              | Alto personalizado del canvas                       |
-| `animationSpeed` | `number`                                            | -                   | Velocidad de animación (para futuras versiones)     |
+| Prop        | Tipo                                                | Default             | Descripción                                         |
+| ----------- | --------------------------------------------------- | ------------------- | --------------------------------------------------- |
+| `variant`   | `'multicolor' \| 'single' \| 'opacity' \| 'matrix'` | `'multicolor'`      | Variante del fondo                                  |
+| `color`     | `string`                                            | `'#3b82f6'`         | Color para variantes 'single', 'opacity' y 'matrix' |
+| `opacity`   | `number`                                            | `0.1`               | Opacidad para la variante 'opacity'                 |
+| `fontSize`  | `number`                                            | `16`                | Tamaño de fuente de los números                     |
+| `numbers`   | `string[]`                                          | `['0','1',...,'9']` | Array de números a mostrar                          |
+| `className` | `string`                                            | `''`                | Clases CSS adicionales                              |
+| `children`  | `React.ReactNode`                                   | -                   | Contenido a mostrar sobre el fondo                  |
+| `width`     | `number`                                            | `auto`              | Ancho personalizado del canvas                      |
+| `height`    | `number`                                            | `auto`              | Alto personalizado del canvas                       |
 
 ## 💡 Ejemplos avanzados
 
@@ -96,7 +95,6 @@ Efecto estilo Matrix con números estáticos:
 <NumericBackground
   variant="multicolor"
   numbers={['α', 'β', 'γ', 'δ', 'ε', 'π', 'Σ', '∞']}
-  density={150}
   fontSize={20}
 >
   <div className="p-8">
@@ -108,12 +106,7 @@ Efecto estilo Matrix con números estáticos:
 ### Fondo de página completa
 
 ```jsx
-<NumericBackground
-  variant="opacity"
-  className="min-h-screen"
-  opacity={0.05}
-  density={80}
->
+<NumericBackground variant="opacity" className="min-h-screen" opacity={0.05}>
   <div className="relative z-10 container mx-auto py-12">
     <h1 className="mb-8 text-4xl font-bold">Mi aplicación</h1>
     <p>Contenido principal con fondo numérico sutil</p>
@@ -171,8 +164,14 @@ npm run dev
 npm run lint
 npm run format
 
-# Construir paquete
+# Construir librería
 npm run build
+
+# Construir demo
+npm run build:demo
+
+# Vista previa
+npm run preview
 
 # Publicar (requiere permisos)
 npm publish
@@ -187,14 +186,17 @@ numeric-background/
 │   │   ├── constants.ts
 │   │   ├── NumericBackground.tsx
 │   │   └── types.ts
-│   ├── index.ts
+│   ├── App.tsx                 # Demo application
+│   ├── main.tsx               # Demo entry point
+│   ├── index.ts               # Library entry point
 │   └── index.css
-├── dist/                    # Archivos compilados
-├── public/                  # Demo assets
+├── dist/                      # Archivos compilados
+├── public/                    # Demo assets
 ├── README.md
 ├── package.json
 ├── tsconfig.json
-├── vite.config.lib.ts      # Configuración de build
+├── vite.config.ts            # Demo build config
+├── vite.config.lib.ts        # Library build config
 └── tailwind.config.js
 ```
 
@@ -237,7 +239,8 @@ MIT © [creativoma](https://github.com/creativoma)
 ### 0.0.1
 
 - ✨ Primera versión del componente NumericBackground
-- 🎨 Soporte para 3 variantes: multicolor, single, opacity
-- ⚙️ Props configurables para densidad, tamaño y números personalizados
+- 🎨 Soporte para 4 variantes: multicolor, single, opacity, matrix
+- ⚙️ Props configurables para color, opacidad, tamaño y números personalizados
 - 📦 Build optimizado con tree-shaking
 - 🔧 Soporte completo para TypeScript
+- 🎮 Demo interactiva en Vercel
