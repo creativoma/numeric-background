@@ -1,26 +1,21 @@
-'use client'
+import { useState, useEffect, useRef, useCallback, FC } from 'react'
+import { NumericBackgroundProps } from './types'
+import { COLORS, DEFAULT_CONFIG } from './constants'
 
-import React, { useState, useEffect, useRef, useCallback } from 'react'
-
-export interface NumericBackgroundProps {
-  variant?: 'multicolor' | 'single' | 'opacity' | 'matrix'
-  color?: string
-  opacity?: number
-  fontSize?: number
-  numbers?: string[]
-  className?: string
-  children?: React.ReactNode
-  width?: number
-  height?: number
-  animationSpeed?: number
-}
-
-const NumericBackground: React.FC<NumericBackgroundProps> = ({
-  variant = 'single',
-  color = '#4A90E2',
-  opacity = 0.6,
-  fontSize = 14,
-  numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+/**
+ * NumericBackground component renders a customizable numeric background
+ * with options for color, opacity, font size, and different visual variants.
+ * It uses a canvas to draw numbers in various styles including matrix effect.
+ *
+ * @param {NumericBackgroundProps} props - The properties for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
+const NumericBackground: FC<NumericBackgroundProps> = ({
+  variant = DEFAULT_CONFIG.variant,
+  color = DEFAULT_CONFIG.color,
+  opacity = DEFAULT_CONFIG.opacity,
+  fontSize = DEFAULT_CONFIG.fontSize,
+  numbers = DEFAULT_CONFIG.numbers,
   className = '',
   children,
   width,
@@ -30,19 +25,6 @@ const NumericBackground: React.FC<NumericBackgroundProps> = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const [mounted, setMounted] = useState(false)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
-
-  const colors = [
-    '#ef4444',
-    '#3b82f6',
-    '#10b981',
-    '#f59e0b',
-    '#8b5cf6',
-    '#ec4899',
-    '#6366f1',
-    '#06b6d4',
-    '#f97316',
-    '#14b8a6',
-  ]
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -62,7 +44,7 @@ const NumericBackground: React.FC<NumericBackgroundProps> = ({
     return () => window.removeEventListener('resize', updateDimensions)
   }, [width, height])
 
-  const drawStaticMatrix = useCallback(() => {
+  const drawBackground = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas || !mounted) return
 
@@ -71,6 +53,7 @@ const NumericBackground: React.FC<NumericBackgroundProps> = ({
 
     const { width: canvasWidth, height: canvasHeight } = dimensions
 
+    // High DPI support
     const dpr = window.devicePixelRatio || 1
     canvas.width = canvasWidth * dpr
     canvas.height = canvasHeight * dpr
@@ -78,49 +61,68 @@ const NumericBackground: React.FC<NumericBackgroundProps> = ({
     canvas.style.height = canvasHeight + 'px'
     ctx.scale(dpr, dpr)
 
+    // Clear canvas
     ctx.clearRect(0, 0, canvasWidth, canvasHeight)
 
+    // Set font properties
     ctx.font = `${fontSize}px monospace`
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
 
+    // Calculate grid
     const charWidth = fontSize * 0.6
-    const charHeight = fontSize
+    const charHeight = fontSize * 1.2
     const cols = Math.ceil(canvasWidth / charWidth)
     const rows = Math.ceil(canvasHeight / charHeight)
 
+    // Draw numbers
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         const x = col * charWidth + charWidth / 2
         const y = row * charHeight + charHeight / 2
         const number = numbers[Math.floor(Math.random() * numbers.length)]
 
-        if (variant === 'multicolor') {
-          ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)]
-          ctx.globalAlpha = 1
-        } else if (variant === 'single') {
-          ctx.fillStyle = color
-          ctx.globalAlpha = 1
-        } else if (variant === 'opacity') {
-          ctx.fillStyle = color
-          ctx.globalAlpha = opacity
+        // Apply variant-specific styling
+        switch (variant) {
+          case 'multicolor':
+            ctx.fillStyle = COLORS[Math.floor(Math.random() * COLORS.length)]
+            ctx.globalAlpha = 1
+            break
+          case 'single':
+            ctx.fillStyle = color
+            ctx.globalAlpha = 1
+            break
+          case 'opacity':
+            ctx.fillStyle = color
+            ctx.globalAlpha = opacity
+            break
+          case 'matrix':
+            // Matrix effect: green color with slight transparency
+            ctx.fillStyle =
+              color === DEFAULT_CONFIG.color ? DEFAULT_CONFIG.color : color
+            ctx.globalAlpha = opacity
+            break
+          default:
+            ctx.fillStyle = COLORS[Math.floor(Math.random() * COLORS.length)]
+            ctx.globalAlpha = 1
         }
 
         ctx.fillText(number, x, y)
       }
     }
-  }, [mounted, dimensions, fontSize, numbers, variant, color, opacity, colors])
+  }, [mounted, dimensions, fontSize, numbers, variant, color, opacity])
 
   useEffect(() => {
     if (!mounted) return
-    drawStaticMatrix()
-  }, [mounted, drawStaticMatrix])
+    drawBackground()
+  }, [mounted, drawBackground])
 
+  // Loading state
   if (!mounted) {
     return (
       <div
         ref={containerRef}
-        className={`relative mt-10 h-full w-full overflow-hidden ${className}`}
+        className={`relative h-full w-full overflow-hidden ${className}`}
       >
         <div className="relative z-10 h-full w-full">{children}</div>
       </div>
@@ -130,7 +132,7 @@ const NumericBackground: React.FC<NumericBackgroundProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative h-full w-full overflow-hidden top-10 ${className}`}
+      className={`relative h-full w-full overflow-hidden ${className}`}
     >
       <canvas
         ref={canvasRef}
