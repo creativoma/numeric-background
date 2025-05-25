@@ -15,7 +15,7 @@ const NumericBackground: FC<NumericBackgroundProps> = ({
   color = DEFAULT_CONFIG.color,
   opacity = DEFAULT_CONFIG.opacity,
   fontSize = DEFAULT_CONFIG.fontSize,
-  numbers = DEFAULT_CONFIG.numbers,
+  numbers,
   className = '',
   children,
   width,
@@ -25,6 +25,15 @@ const NumericBackground: FC<NumericBackgroundProps> = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const [mounted, setMounted] = useState(false)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+
+  const getNumbers = useCallback(() => {
+    if (numbers) {
+      return numbers
+    }
+    return variant === 'matrix'
+      ? DEFAULT_CONFIG.matrixNumbers
+      : DEFAULT_CONFIG.numbers
+  }, [numbers, variant])
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -52,8 +61,8 @@ const NumericBackground: FC<NumericBackgroundProps> = ({
     if (!ctx) return
 
     const { width: canvasWidth, height: canvasHeight } = dimensions
+    const numbersToUse = getNumbers()
 
-    // High DPI support
     const dpr = window.devicePixelRatio || 1
     canvas.width = canvasWidth * dpr
     canvas.height = canvasHeight * dpr
@@ -61,56 +70,51 @@ const NumericBackground: FC<NumericBackgroundProps> = ({
     canvas.style.height = canvasHeight + 'px'
     ctx.scale(dpr, dpr)
 
-    // Clear canvas
     ctx.clearRect(0, 0, canvasWidth, canvasHeight)
 
-    // Set font properties
     ctx.font = `${fontSize}px monospace`
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
 
-    // Calculate grid
     const charWidth = fontSize * 0.6
     const charHeight = fontSize * 1.2
     const cols = Math.ceil(canvasWidth / charWidth)
     const rows = Math.ceil(canvasHeight / charHeight)
 
-    // Draw numbers
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         const x = col * charWidth + charWidth / 2
         const y = row * charHeight + charHeight / 2
-        const number = numbers[Math.floor(Math.random() * numbers.length)]
+        const number =
+          numbersToUse[Math.floor(Math.random() * numbersToUse.length)]
 
-        // Apply variant-specific styling
         switch (variant) {
           case 'multicolor':
             ctx.fillStyle = COLORS[Math.floor(Math.random() * COLORS.length)]
-            ctx.globalAlpha = 1
+            ctx.globalAlpha = opacity
             break
           case 'single':
             ctx.fillStyle = color
-            ctx.globalAlpha = 1
+            ctx.globalAlpha = opacity
             break
           case 'opacity':
             ctx.fillStyle = color
             ctx.globalAlpha = opacity
             break
           case 'matrix':
-            // Matrix effect: green color with slight transparency
             ctx.fillStyle =
               color === DEFAULT_CONFIG.color ? DEFAULT_CONFIG.color : color
             ctx.globalAlpha = opacity
             break
           default:
-            ctx.fillStyle = COLORS[Math.floor(Math.random() * COLORS.length)]
-            ctx.globalAlpha = 1
+            ctx.fillStyle = color
+            ctx.globalAlpha = opacity
         }
 
         ctx.fillText(number, x, y)
       }
     }
-  }, [mounted, dimensions, fontSize, numbers, variant, color, opacity])
+  }, [mounted, dimensions, fontSize, variant, color, opacity, getNumbers])
 
   useEffect(() => {
     if (!mounted) return
