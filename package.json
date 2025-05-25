@@ -21,9 +21,8 @@
   "sideEffects": false,
   "scripts": {
     "dev": "vite",
-    "build:demo": "vite build",
     "preview": "vite preview",
-    "build": "tsc && vite build --config vite.config.lib.ts",
+    "build:demo": "vite build --config vite.config.ts",
     "build:lib": "tsc && vite build --config vite.config.lib.ts",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write .",
