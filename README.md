@@ -40,6 +40,7 @@ function App() {
 ### Multicolor
 
 Números en colores aleatorios vibrantes:
+![Multicolor Background](public/example-1.png)
 
 ```jsx
 <NumericBackground variant="multicolor">{/* Tu contenido */}</NumericBackground>
@@ -58,6 +59,7 @@ Todos los números del mismo color:
 ### Con opacidad
 
 Números con transparencia ajustable:
+![Opacidad](public/example-2.png)
 
 ```jsx
 <NumericBackground variant="opacity" color="#8b5cf6" opacity={0.15}>
@@ -68,6 +70,7 @@ Números con transparencia ajustable:
 ### Matrix
 
 Efecto estilo Matrix con números estáticos:
+![Estilo Matrix](public/example-3.png)
 
 ```jsx
 <NumericBackground variant="matrix" color="#00ff00">
@@ -92,6 +95,8 @@ Efecto estilo Matrix con números estáticos:
 ## 💡 Ejemplos avanzados
 
 ### Números personalizados
+
+![Números personalizados](public/example-4.png)
 
 ```jsx
 <NumericBackground
