@@ -138,7 +138,11 @@ const App = () => {
               A React component for creating customizable numeric backgrounds
             </p>
             <div className="flex justify-center space-x-4">
-              <a className="rounded-lg border border-gray-300 bg-white px-6 py-3 font-medium text-gray-700 hover:bg-gray-50">
+              <a
+                href="https://github.com/creativoma/numeric-background"
+                target="_blank"
+                className="rounded-lg border border-gray-300 bg-white px-6 py-3 font-medium text-gray-700 hover:bg-gray-50"
+              >
                 Documentation
               </a>
               <a
