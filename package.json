@@ -1,6 +1,6 @@
 {
   "name": "@creativoma/numeric-background",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "type": "module",
   "description": "A React component for creating a numeric background",
   "main": "dist/index.js",
