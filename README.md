@@ -1,6 +1,6 @@
 # @creativoma/numeric-background
 
-![Screenshot](public/screenshot.png)
+![Screenshot](public/screenshot.webp)
 
 A modern React component that generates animated numeric backgrounds with different color and opacity variants. Perfect for adding a dynamic visual touch to your applications.
 
