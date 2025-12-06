@@ -2,10 +2,13 @@ import { useState, useEffect, useRef, useCallback, FC, useMemo } from 'react'
 import { NumericBackgroundProps } from './types'
 import { COLORS, DEFAULT_CONFIG } from './constants'
 
-const throttle = (func: Function, delay: number) => {
+const throttle = <T extends unknown[]>(
+  func: (...args: T) => void,
+  delay: number
+) => {
   let timeoutId: NodeJS.Timeout | null = null
   let lastExecTime = 0
-  return (...args: any[]) => {
+  return (...args: T) => {
     const currentTime = Date.now()
 
     if (currentTime - lastExecTime > delay) {
