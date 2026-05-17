@@ -12,7 +12,7 @@ const App = () => {
   return (
     <div className="min-h-[100dvh]">
       {/* Control Panel */}
-      <div className="relative z-30 mx-auto w-full max-w-sm px-4 pt-4 lg:fixed lg:top-4 lg:left-4 lg:mx-0 lg:w-72 lg:max-w-none lg:px-0 lg:pt-0">
+      <div className="relative z-30 mx-auto w-full max-w-sm px-4 pt-4 md:fixed md:top-4 md:left-4 md:mx-0 md:w-72 md:max-w-none md:px-0 md:pt-0">
         <div className="max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-lg border border-gray-200/50 bg-white/90 p-4 shadow-lg backdrop-blur-md">
           {/* Header */}
           <div className="mb-4 border-b border-gray-200 pb-3">
@@ -166,7 +166,7 @@ const App = () => {
         numbers={variant === 'matrix' ? ['0', '1'] : DEFAULT_CONFIG.numbers}
         className="min-h-[100dvh]"
       >
-        <div className="flex min-h-[100dvh] items-center justify-center px-4 py-8 lg:min-h-screen lg:px-8 lg:py-12 lg:pl-80">
+        <div className="flex items-start justify-center px-4 pt-4 pb-8 md:min-h-[100dvh] md:items-center md:px-8 md:py-12 md:pl-80">
           <div className="w-full max-w-xl rounded-2xl border border-white/30 bg-white/85 px-6 py-6 text-center shadow-xl backdrop-blur-lg sm:px-8 sm:py-8">
             <div className="mb-4 inline-block rounded-lg bg-[#1673ff] px-4 py-1.5">
               <span className="text-xs font-bold tracking-wider text-white uppercase">
