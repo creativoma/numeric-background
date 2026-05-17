@@ -10,10 +10,10 @@ const App = () => {
   const [fontSize, setFontSize] = useState(DEFAULT_CONFIG.fontSize)
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-[100dvh]">
       {/* Control Panel */}
-      <div className="fixed top-4 left-4 z-30 w-64">
-        <div className="rounded-lg border border-gray-200/50 bg-white/90 p-4 shadow-lg backdrop-blur-md">
+      <div className="relative z-30 mx-auto w-full max-w-sm px-4 pt-4 lg:fixed lg:top-4 lg:left-4 lg:mx-0 lg:w-72 lg:max-w-none lg:px-0 lg:pt-0">
+        <div className="max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-lg border border-gray-200/50 bg-white/90 p-4 shadow-lg backdrop-blur-md">
           {/* Header */}
           <div className="mb-4 border-b border-gray-200 pb-3">
             <h1 className="mb-1 text-lg font-bold text-[#1673ff]">
@@ -123,7 +123,7 @@ const App = () => {
                 <span className="ml-1 text-xs text-gray-400">App.tsx</span>
               </div>
             </div>
-            <div className="p-2 font-mono text-xs leading-relaxed text-gray-800">
+            <div className="overflow-x-auto p-2 font-mono text-xs leading-relaxed text-gray-800">
               <div>
                 <span className="text-purple-600">&lt;NumericBackground</span>
               </div>
@@ -164,21 +164,21 @@ const App = () => {
         opacity={opacity}
         fontSize={fontSize}
         numbers={variant === 'matrix' ? ['0', '1'] : DEFAULT_CONFIG.numbers}
-        className="min-h-screen"
+        className="min-h-[100dvh] lg:min-h-screen"
       >
-        <div className="flex min-h-screen items-center justify-center px-4 py-12">
-          <div className="max-w-xl rounded-2xl border border-white/30 bg-white/85 px-8 py-8 text-center shadow-xl backdrop-blur-lg">
+        <div className="flex min-h-[100dvh] items-center justify-center px-4 py-8 lg:min-h-screen lg:px-8 lg:py-12 lg:pl-80">
+          <div className="w-full max-w-xl rounded-2xl border border-white/30 bg-white/85 px-6 py-6 text-center shadow-xl backdrop-blur-lg sm:px-8 sm:py-8">
             <div className="mb-4 inline-block rounded-lg bg-[#1673ff] px-4 py-1.5">
               <span className="text-xs font-bold tracking-wider text-white uppercase">
                 React Component
               </span>
             </div>
-            <h1 className="mb-4 text-3xl font-black text-gray-800">
+            <h1 className="mb-4 text-2xl font-black text-gray-800 sm:text-3xl">
               @creativoma/
               <br />
               numeric-background
             </h1>
-            <p className="mb-6 text-base leading-relaxed text-balance text-gray-600">
+            <p className="mb-6 text-sm leading-relaxed text-balance text-gray-600 sm:text-base">
               Create stunning animated numeric backgrounds with multiple
               variants and full customization
             </p>
