@@ -164,7 +164,7 @@ const App = () => {
         opacity={opacity}
         fontSize={fontSize}
         numbers={variant === 'matrix' ? ['0', '1'] : DEFAULT_CONFIG.numbers}
-        className="min-h-[100dvh] lg:min-h-screen"
+        className="min-h-[100dvh]"
       >
         <div className="flex min-h-[100dvh] items-center justify-center px-4 py-8 lg:min-h-screen lg:px-8 lg:py-12 lg:pl-80">
           <div className="w-full max-w-xl rounded-2xl border border-white/30 bg-white/85 px-6 py-6 text-center shadow-xl backdrop-blur-lg sm:px-8 sm:py-8">
