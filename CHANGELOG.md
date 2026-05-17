@@ -11,6 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Removed unused suspicious dependency "6@0.0.1" (test package from 2014)
 
+### Fixed
+
+- Fixed responsive design issues on mobile devices
+- Control panel now properly scales with smaller screens using reduced padding and font sizes
+- Main content card width adjusted for mobile (max-w-sm on mobile, max-w-xl on larger screens)
+- Action buttons now display as full-width on mobile, side-by-side on tablet/desktop
+- Header text sizes now scale correctly across all breakpoints
+- Improved spacing and layout consistency on small screens
+- Stats section (4 Variants, TypeScript, MIT) now has proper mobile spacing
+
 ### Changed
 
 - Updated React from 19.2.1 to 19.2.4
